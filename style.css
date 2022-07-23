@@ -1,0 +1,48 @@
+* {
+  box-sizing: border-box;
+  padding: 0px;
+  text-align: center;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  margin: auto;
+}
+.header {
+background-color: lightblue;
+color: white;
+}
+.menu {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-gap: 10px;
+  padding: 10px;
+  text-align: center;
+  width: 40%;
+  background-color: lightblue;
+}
+
+.menu a {
+  background-color: #e5e5e5;
+  display: block;
+  width: 100%;
+  color: black;
+}
+
+.main {
+  float: center;
+  width: 60%;
+  background-color: white;
+}
+
+.footer {
+
+  background-color: lightblue;
+  color: white;
+  }
+@media only screen and (max-width: 620px) {
+
+  /* For mobile phones: */
+  .menu,
+  .main,
+  .about {
+    width: 100%;
+  }
+}
