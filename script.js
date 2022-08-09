@@ -1,4 +1,6 @@
-
+window.onresize = () => {
+  location.reload();
+}
 // set the dimensions and margins of the graph
 const margin = { top: 10, right: 30, bottom: 90, left: 40 },
   width = document.getElementById('project1').offsetWidth - margin.left - margin.right,
@@ -20,7 +22,7 @@ let databinding = d3.json("data.json").then(function (data) {
   // X axis
   const x = d3.scaleBand()
     .range([0, width])
-    .domain(data.map(d => d.year))
+    .domain(data.map(d => d.Q))
     .padding(0.2);
   svg.append("g")
     .attr("transform", `translate(0,${height})`)
@@ -31,7 +33,7 @@ let databinding = d3.json("data.json").then(function (data) {
 
   // Add Y axis
   const y = d3.scaleLinear()
-    .domain([0, d3.max(data, function (d) { return d.value; })])
+    .domain([0, d3.max(data, function (d) { return d.SX+d.Y3; })])
     //.range([ height, 0]);
     .range([height, 0]);
   var yAxis = d3.axisLeft()
@@ -47,12 +49,13 @@ let databinding = d3.json("data.json").then(function (data) {
     .call(yAxis);
 
   // Bars
-  svg.selectAll("mybar")
+  svg.selectAll('.mybar')
     .data(data)
     .join("rect")
-    .attr("x", d => x(d.year))
+    .attr("x", d => x(d.Q))
     .attr("width", x.bandwidth())
     .attr("fill", "steelblue")
+    .classed('mybar',true)
     .on("mouseover", function (event,d) {
       d3.select(this)
       .transition().duration(200)
@@ -60,7 +63,9 @@ let databinding = d3.json("data.json").then(function (data) {
       div.transition()
       .duration(200)
       .style("opacity", .9);
-    div.html("<b> " + d.year + "</b> <br/>" + d.value.toLocaleString('en'))
+    div.html("<b> " + d.Q + "</b> <br/>" + "S/X: " + 
+    d.SX.toLocaleString('en')+"<br/> 3/Y: "+ d.Y3.toLocaleString('en')
+    +"<br/><b>  "+ (d.Y3+d.SX).toLocaleString('en')+"</b>")
       .style("left", (event.pageX) + "px")
       .style("top", (event.pageY - 28) + "px");
     })
@@ -75,12 +80,72 @@ let databinding = d3.json("data.json").then(function (data) {
     .attr("height", d => height - y(0)) // always equal to 0
     .attr("y", d => y(0))
     .attr("on")
-  // Animation
-  svg.selectAll("rect")
+  // Animation 1
+  svg.selectAll('.mybar')
     .transition()
-    .duration(1500)
-    .attr("y", d => y(d.value))
-    .attr("height", d => height - y(d.value))
+    .duration(1000)
+    .delay(function(d, i) { return i * 100; })
+    .attr("y", d => y(d.SX))
+    .attr("height", d => height - y(d.SX))
+    // Animation 2
+/**
+  .transition()
+  .delay(1000)
+  .delay(function(d, i) { return i * 100; })
+  .attr("y", d => y(d.SX+d.Y3))
+  .attr("height", d => height - y(d.SX+d.Y3))
+**/
+
+// Bars2
+svg.selectAll('.mybar2')
+.data(data)
+.join("rect")
+.attr("x", d => x(d.Q))
+.attr("width", x.bandwidth())
+.attr("fill", "orange")
+.classed('mybar2',true)
+.on("mouseover", function (event,d) {
+  d3.select(this)
+  .transition().duration(200)
+  .attr("fill", "#ff6f3c");
+  div.transition()
+  .duration(200)
+  .style("opacity", .9);
+div.html("<b> " + d.Q + "</b> <br/>" + "S/X: " + 
+d.SX.toLocaleString('en')+"<br/> 3/Y: "+ d.Y3.toLocaleString('en')
++"<br/><b>  "+ (d.Y3+d.SX).toLocaleString('en')+"</b>")
+  .style("left", (event.pageX) + "px")
+  .style("top", (event.pageY - 28) + "px");
+})
+.on("mouseout", function (d) {
+  d3.select(this).transition()
+  .duration(500).attr("fill", "steelblue");
+  div.transition()
+     .duration(500)
+     .style("opacity", 0);
+})
+// no bar at the beginning thus:
+.attr("height", d => height - y(0)) // always equal to 0
+.attr("y", d => y(0))
+.attr("on")
+// Animation 1
+svg.selectAll('.mybar2')
+.transition()
+.duration(1000)
+.delay(function(d, i) { return i * 100; })
+.attr("y", d => y(d.SX))
+.attr("height", d => height - y(d.SX))
+// Animation 2
+
+.transition()
+.delay(1000)
+.delay(function(d, i) { return i * 100; })
+.attr("y", d => y(d.SX+d.Y3))
+.attr("height", d => height - y(d.SX+d.Y3))
+
+
+
+
 })
 
 

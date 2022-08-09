@@ -44,6 +44,7 @@ color: white;
   float: center;
   background-color: white;
   padding: 5px;
+
 }
 #project1{
   height: 80vh;
@@ -51,8 +52,8 @@ color: white;
 div.tooltip {	
   position: absolute;			
   text-align: center;			
-  width: 60px;					
-  height: 32px;					
+  width: 80px;					
+  height: 62px;					
   padding: 2px;				
   font: 12px sans-serif;		
   background: #ff9a3c;	
