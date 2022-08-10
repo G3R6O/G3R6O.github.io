@@ -7,7 +7,8 @@
 
 }
 h2{
-  padding: 20px;
+  padding: 10px;
+  font-size: small;
 }
 body {
     background-color: white;
@@ -20,7 +21,7 @@ color: white;
 .menu {
   display: grid;
   grid-template-columns: auto auto auto;
-  grid-gap: 10px;
+  grid-gap: 5px;
   text-align: center;
   width: 40%;
   background-color: #ff9a3c;
@@ -34,9 +35,12 @@ color: white;
   display: block;
   width: 100%;
   color: white;
-  padding: 10px;
+  padding: 5px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+  font-weight: bold;
+  text-decoration: none;
+  
 
 }
 .menu a:hover {
@@ -46,12 +50,12 @@ color: white;
 .main {
   float: center;
   background-color: white;
-  padding: 5px;
+  padding: 15px;
 
 }
 #project1{
-  height: 70vh;
-  width: 90%;
+  height: 60vh;
+ 
 }
 div.tooltip {	
   position: absolute;			
@@ -77,7 +81,7 @@ div.tooltip {
   .menu,
   .main,
   .about {
-    width: 90%;
+    width: 100%;
   }
 
 }
