@@ -83,65 +83,13 @@ let databinding = d3.json("data.json").then(function (data) {
   // Animation 1
   svg.selectAll('.mybar')
     .transition()
-    .duration(1000)
+    .duration(250)
     .delay(function(d, i) { return i * 100; })
-    .attr("y", d => y(d.SX))
-    .attr("height", d => height - y(d.SX))
-    // Animation 2
-/**
-  .transition()
-  .delay(1000)
-  .delay(function(d, i) { return i * 100; })
-  .attr("y", d => y(d.SX+d.Y3))
-  .attr("height", d => height - y(d.SX+d.Y3))
-**/
+    .attr("y", d => y(d.SX+d.Y3))
+    .attr("height", d => height - y(d.SX+d.Y3))
 
-// Bars2
-svg.selectAll('.mybar2')
-.data(data)
-.join("rect")
-.attr("x", d => x(d.Q))
-.attr("width", x.bandwidth())
-.attr("fill", "orange")
-.classed('mybar2',true)
-.on("mouseover", function (event,d) {
-  d3.select(this)
-  .transition().duration(200)
-  .attr("fill", "#ff6f3c");
-  div.transition()
-  .duration(200)
-  .style("opacity", .9);
-div.html("<b> " + d.Q + "</b> <br/>" + "S/X: " + 
-d.SX.toLocaleString('en')+"<br/> 3/Y: "+ d.Y3.toLocaleString('en')
-+"<br/><b>  "+ (d.Y3+d.SX).toLocaleString('en')+"</b>")
-  .style("left", (event.pageX) + "px")
-  .style("top", (event.pageY - 28) + "px");
-})
-.on("mouseout", function (d) {
-  d3.select(this).transition()
-  .duration(500).attr("fill", "steelblue");
-  div.transition()
-     .duration(500)
-     .style("opacity", 0);
-})
-// no bar at the beginning thus:
-.attr("height", d => height - y(0)) // always equal to 0
-.attr("y", d => y(0))
-.attr("on")
-// Animation 1
-svg.selectAll('.mybar2')
-.transition()
-.duration(1000)
-.delay(function(d, i) { return i * 100; })
-.attr("y", d => y(d.SX))
-.attr("height", d => height - y(d.SX))
-// Animation 2
 
-.transition()
-.delay(1000)
-.delay(function(d, i) { return i * 100; })
-.attr("y", d => y(d.SX+d.Y3))
-.attr("height", d => height - y(d.SX+d.Y3))
+
 
 
 

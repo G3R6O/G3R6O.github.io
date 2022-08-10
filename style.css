@@ -6,6 +6,9 @@
   margin: auto;
 
 }
+h2{
+  padding: 20px;
+}
 body {
     background-color: white;
 }
@@ -47,7 +50,8 @@ color: white;
 
 }
 #project1{
-  height: 80vh;
+  height: 70vh;
+  width: 90%;
 }
 div.tooltip {	
   position: absolute;			
@@ -73,7 +77,7 @@ div.tooltip {
   .menu,
   .main,
   .about {
-    width: 100%;
+    width: 90%;
   }
 
 }
