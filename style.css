@@ -6,6 +6,29 @@
   margin: auto;
 
 }
+.axisBlue line{
+  stroke: steelblue;
+  font-weight: bold;
+}
+.axisBlue path{
+  stroke: steelblue;
+  stroke-width: 2px;
+
+}
+.axisBlue text{
+  fill: steelblue;
+ 
+}
+.axisGrey line{
+  stroke: grey;
+}
+.axisGrey path{
+  stroke: grey;
+  stroke-width: 2px;
+}
+.axisGrey text{
+  fill: grey;
+}
 h2{
   padding: 10px;
   font-size: small;
