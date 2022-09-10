@@ -29,7 +29,6 @@ let databinding = d3.json("data.json").then(function (data) {
     .call(d3.axisBottom(x))
     .selectAll("text")
     .attr("transform", "translate(-10,0)rotate(-45)")
-
     .style("text-anchor", "end");
 
   // Add Y axis
@@ -94,7 +93,8 @@ let databinding = d3.json("data.json").then(function (data) {
     .join("rect")
     .attr("x", d => x(d.Q))
     .attr("width", x.bandwidth() / 2)
-    .attr("fill", "black")
+    //.attr("fill", "rgb(31, 31, 31)")
+    .attr("fill","transparent")
     .attr("stroke-width",1)
     .attr("stroke","#046cfc")
     .classed('mybar', true)
@@ -113,7 +113,7 @@ let databinding = d3.json("data.json").then(function (data) {
     })
     .on("mouseout", function (d) {
       d3.select(this).transition()
-        .duration(500).attr("fill", "black");
+        .duration(500).attr("fill","transparent");
       div.transition()
         .duration(500)
         .style("opacity", 0);
@@ -137,7 +137,7 @@ let databinding = d3.json("data.json").then(function (data) {
     .join("rect")
     .attr("x", d => x(d.Q) + x.bandwidth() / 2)
     .attr("width", x.bandwidth() / 2)
-    .attr("fill", "black")
+    .attr("fill","transparent")
     .attr("stroke-width",1)
     .attr("stroke","#04c40c")
     .classed('mybar2', true)
@@ -149,13 +149,13 @@ let databinding = d3.json("data.json").then(function (data) {
         .duration(200)
         .style("opacity", .9);
       div.html("<b> " + d.Q + "</b> <br/>" + "Avg. price: <br/><b>" +
-        d.price.toLocaleString('en') + "</b>")
+        "$" + d.price.toLocaleString('en') )
         .style("left", (event.pageX) - 35 + "px")
         .style("top", (event.pageY - 100) + "px");
     })
     .on("mouseout", function (d) {
       d3.select(this).transition()
-        .duration(500).attr("fill", "black");
+      .duration(500).attr("fill","transparent");
       div.transition()
         .duration(500)
         .style("opacity", 0);
