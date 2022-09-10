@@ -81,7 +81,7 @@ width: 25%;
 .main {
   float: center;
   background-color: rgb(31, 31, 31);
-  padding: 15px;
+  padding: 5px;
   background-image: linear-gradient(black, rgb(31, 31, 31));
 }
 .main a{
