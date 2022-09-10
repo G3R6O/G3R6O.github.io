@@ -5,41 +5,45 @@
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   margin: auto;
 
+
 }
 .axisBlue line{
-  stroke: steelblue;
+  stroke: #046cfc;
   font-weight: bold;
 }
 .axisBlue path{
-  stroke: steelblue;
+  stroke: #046cfc;
   stroke-width: 2px;
 
 }
 .axisBlue text{
-  fill: steelblue;
+  fill: #046cfc;
  
 }
 .axisGrey line{
-  stroke: grey;
+  stroke: #04c40c;
 }
 .axisGrey path{
-  stroke: grey;
+  stroke: #04c40c;
   stroke-width: 2px;
 }
 .axisGrey text{
-  fill: grey;
+  fill: #04c40c;
 }
 h2{
   padding: 10px;
   font-size: small;
 }
 body {
-    background-color: white;
+    background-color: black;
+    color: white;
 }
 
 .header {
-background-color: #ff6f3c;
-color: white;
+background-color: black;
+color: #ff6f3c;
+width: 25%;
+
 }
 .menu {
   display: grid;
@@ -47,7 +51,7 @@ color: white;
   grid-gap: 5px;
   text-align: center;
   width: 40%;
-  background-color: #ff9a3c;
+  background-color: slateblue;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 
@@ -72,12 +76,14 @@ color: white;
 
 .main {
   float: center;
-  background-color: white;
+  background-color: black;
   padding: 15px;
+
 
 }
 #project1{
   height: 60vh;
+
  
 }
 div.tooltip {	
@@ -87,7 +93,7 @@ div.tooltip {
   height: 62px;					
   padding: 2px;				
   font: 12px sans-serif;		
-  background: #ff9a3c;	
+  background: black;	
   border: 0px;		
   border-radius: 8px;			
   pointer-events: none;			
@@ -95,12 +101,13 @@ div.tooltip {
 .footer {
 
   background-color: #ffc93c;
-  color: white;
+  color: black;
   padding: 5px;
   }
 @media only screen and (max-width: 620px) {
 
   /* For mobile phones: */
+  .header,
   .menu,
   .main,
   .about {

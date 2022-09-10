@@ -72,7 +72,7 @@ let databinding = d3.json("data.json").then(function (data) {
     .attr("dy", ".75em")
     .attr("transform", "rotate(-90)")
     .text("# cars produced")
-    .attr("fill", "steelblue");
+    .attr("fill", "#046cfc");
     svg.append("text")
     .attr("class", "y label")
     .attr("text-anchor", "end")
@@ -80,25 +80,28 @@ let databinding = d3.json("data.json").then(function (data) {
     .attr("dy", ".75em")
     .attr("transform", "rotate(-90)")
     .text("stock price")
-    .attr("fill", "grey");
+    .attr("fill", "#04c40c");
     svg.append("text")
     .attr("class", "x label")
     .attr("text-anchor", "middle")
     .attr("x", width/2)
     .attr("y", height +60)
-    .text("quarters");
+    .text("quarters")
+    .attr("fill", "white");
   // Bars
   svg.selectAll('.mybar')
     .data(data)
     .join("rect")
     .attr("x", d => x(d.Q))
     .attr("width", x.bandwidth() / 2)
-    .attr("fill", "steelblue")
+    .attr("fill", "black")
+    .attr("stroke-width",1)
+    .attr("stroke","#046cfc")
     .classed('mybar', true)
     .on("mouseover", function (event, d) {
       d3.select(this)
         .transition().duration(200)
-        .attr("fill", "#ff6f3c");
+        .attr("fill", "#046cfc");
       div.transition()
         .duration(200)
         .style("opacity", .9);
@@ -110,7 +113,7 @@ let databinding = d3.json("data.json").then(function (data) {
     })
     .on("mouseout", function (d) {
       d3.select(this).transition()
-        .duration(500).attr("fill", "steelblue");
+        .duration(500).attr("fill", "black");
       div.transition()
         .duration(500)
         .style("opacity", 0);
@@ -134,12 +137,14 @@ let databinding = d3.json("data.json").then(function (data) {
     .join("rect")
     .attr("x", d => x(d.Q) + x.bandwidth() / 2)
     .attr("width", x.bandwidth() / 2)
-    .attr("fill", "grey")
+    .attr("fill", "black")
+    .attr("stroke-width",1)
+    .attr("stroke","#04c40c")
     .classed('mybar2', true)
     .on("mouseover", function (event, d) {
       d3.select(this)
         .transition().duration(200)
-        .attr("fill", "#ff6f3c");
+        .attr("fill", "#04c40c");
       div.transition()
         .duration(200)
         .style("opacity", .9);
@@ -150,7 +155,7 @@ let databinding = d3.json("data.json").then(function (data) {
     })
     .on("mouseout", function (d) {
       d3.select(this).transition()
-        .duration(500).attr("fill", "grey");
+        .duration(500).attr("fill", "black");
       div.transition()
         .duration(500)
         .style("opacity", 0);
