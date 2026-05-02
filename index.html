@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simple Number Grapher</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <h1>Simple Waterfall Grapher</h1>
+    <p class="subtitle">Two independent waterfall visuals with different control styles.</p>
+    <p><a href="pnl.html">Open PnL input page</a></p>
+
+    <section class="panel">
+      <h2>Financial Waterfall</h2>
+      <section class="controls" aria-label="Financial number inputs">
+        <label>
+          Revenue
+          <input id="revenue" type="number" value="25" min="-100" max="100" />
+        </label>
+        <label>
+          COGS
+          <input id="cogs" type="number" value="-30" min="-100" max="100" />
+        </label>
+        <label>
+          OPEX
+          <input id="opex" type="number" value="40" min="-100" max="100" />
+        </label>
+      </section>
+
+      <section class="graph-card" aria-label="Financial waterfall graph">
+        <canvas id="chart-financial" width="720" height="360"></canvas>
+      </section>
+    </section>
+
+    <section class="panel">
+      <h2>Scenario Waterfall</h2>
+      <section class="controls slider-controls" aria-label="Scenario slider inputs">
+        <label>
+          Volume
+          <input id="volume" type="range" value="20" min="-100" max="100" step="1" />
+          <span class="input-value" data-value-for="volume">20</span>
+        </label>
+        <label>
+          Price
+          <input id="price" type="range" value="-10" min="-100" max="100" step="1" />
+          <span class="input-value" data-value-for="price">-10</span>
+        </label>
+        <label>
+          Fixed Costs
+          <input id="fixedCosts" type="range" value="-15" min="-100" max="100" step="1" />
+          <span class="input-value" data-value-for="fixedCosts">-15</span>
+        </label>
+      </section>
+
+      <section class="graph-card" aria-label="Scenario waterfall graph">
+        <canvas id="chart-scenario" width="720" height="360"></canvas>
+      </section>
+    </section>
+
+    <section class="panel">
+      <h2>Copy-Friendly Data Table</h2>
+      <div class="table-actions">
+        <button id="copy-table-button" type="button">Copy Table</button>
+        <button id="export-csv-button" type="button">Export CSV</button>
+        <span id="copy-status" aria-live="polite"></span>
+      </div>
+      <div class="table-wrap">
+        <table id="data-table" aria-label="Values from both visuals">
+          <thead>
+            <tr>
+              <th>Visual</th>
+              <th>Item</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody id="data-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
