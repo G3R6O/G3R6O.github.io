@@ -1,86 +1,265 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simple Number Grapher</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio in SEK</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+      background:#0f0f0f;color:#f0f0f0;min-height:100dvh;
+      display:flex;flex-direction:column;align-items:center;
+      justify-content:flex-start;padding:1rem;gap:1.25rem;
+    }
+    .ip-bar{
+      width:100%;max-width:1100px;text-align:center;
+      font-size:.8rem;color:#888;letter-spacing:.04em;padding:.4rem 0;
+    }
+    .ip-bar span{color:#ccc;font-weight:500}
+    .container{
+      display:flex;flex-wrap:wrap;gap:1.1rem;justify-content:center;
+      width:100%;max-width:1100px;
+    }
+    .card{
+      background:#1a1a1a;border:1px solid #333;border-radius:16px;
+      padding:1.5rem;text-align:center;width:100%;max-width:320px;
+      box-shadow:0 8px 32px rgba(0,0,0,.4);flex:1 1 260px;
+    }
+    .card.total{border-color:#555;background:#222;max-width:100%;flex:1 1 100%}
+    .logo{font-size:.72rem;letter-spacing:.12em;color:#888;text-transform:uppercase;margin-bottom:.3rem}
+    .symbol{font-size:1.2rem;font-weight:700;margin-bottom:.85rem}
+    .symbol.total{color:#fbbf24}
+    .symbol.tsla{color:#e82127}
+    .symbol.spcx{color:#3b82f6}
+    .symbol.orcl{color:#f97316}
+    .symbol.goog{color:#22c55e}
+    .value{font-size:2.2rem;font-weight:700;letter-spacing:-.02em;line-height:1.1;margin-bottom:.25rem;color:#fafafa}
+    .card.total .value{font-size:2.8rem}
+    .currency{font-size:.95rem;color:#a3a3a3;margin-bottom:1rem}
+    .details{font-size:.8rem;color:#777;line-height:1.45}
+    .details span{color:#bbb}
+    .status{font-size:.75rem;color:#666;width:100%;text-align:center}
+    .error{color:#ef4444}
+    .chart-card{
+      background:#1a1a1a;border:1px solid #333;border-radius:16px;
+      padding:1.5rem;width:100%;max-width:480px;box-shadow:0 8px 32px rgba(0,0,0,.4);
+    }
+    .chart-title{font-size:.85rem;letter-spacing:.1em;color:#888;text-transform:uppercase;text-align:center;margin-bottom:1rem}
+    .chart-wrapper{position:relative;width:100%;max-width:340px;margin:0 auto}
+
+    @media (orientation:portrait){
+      .container{flex-direction:column;align-items:center}
+      .card{max-width:360px}.card.total{max-width:360px}
+      .value{font-size:2.5rem}.card.total .value{font-size:3rem}
+      .chart-card{max-width:360px}
+    }
+    @media (orientation:landscape){
+      body{padding:.75rem}
+      .card{max-width:300px;padding:1.25rem 1.4rem}.card.total{max-width:100%}
+      .value{font-size:2rem}.card.total .value{font-size:2.5rem}
+    }
+    @media (max-width:380px){
+      .value{font-size:2rem}.card.total .value{font-size:2.4rem}
+    }
+  </style>
 </head>
 <body>
-  <main class="app">
-    <h1>Simple Waterfall Grapher</h1>
-    <p class="subtitle">Two independent waterfall visuals with different control styles.</p>
-    <p><a href="pnl.html">Open PnL input page</a></p>
+  <div class="ip-bar">Your public IP: <span id="ip-address">…</span></div>
 
-    <section class="panel">
-      <h2>Financial Waterfall</h2>
-      <section class="controls" aria-label="Financial number inputs">
-        <label>
-          Revenue
-          <input id="revenue" type="number" value="25" min="-100" max="100" />
-        </label>
-        <label>
-          COGS
-          <input id="cogs" type="number" value="-30" min="-100" max="100" />
-        </label>
-        <label>
-          OPEX
-          <input id="opex" type="number" value="40" min="-100" max="100" />
-        </label>
-      </section>
+  <div class="container">
+    <div class="card total">
+      <div class="logo">Portfolio total</div>
+      <div class="symbol total">TOTAL</div>
+      <div class="value" id="total-value">—</div>
+      <div class="currency">SEK</div>
+      <div class="details" id="total-details">Loading…</div>
+    </div>
 
-      <section class="graph-card" aria-label="Financial waterfall graph">
-        <canvas id="chart-financial" width="720" height="360"></canvas>
-      </section>
-    </section>
+    <div class="card">
+      <div class="logo">Position</div>
+      <div class="symbol tsla" id="tsla-label">— × TSLA</div>
+      <div class="value" id="tsla-value">—</div>
+      <div class="currency">SEK</div>
+      <div class="details" id="tsla-details">Loading…</div>
+    </div>
 
-    <section class="panel">
-      <h2>Scenario Waterfall</h2>
-      <section class="controls slider-controls" aria-label="Scenario slider inputs">
-        <label>
-          Volume
-          <input id="volume" type="range" value="20" min="-100" max="100" step="1" />
-          <span class="input-value" data-value-for="volume">20</span>
-        </label>
-        <label>
-          Price
-          <input id="price" type="range" value="-10" min="-100" max="100" step="1" />
-          <span class="input-value" data-value-for="price">-10</span>
-        </label>
-        <label>
-          Fixed Costs
-          <input id="fixedCosts" type="range" value="-15" min="-100" max="100" step="1" />
-          <span class="input-value" data-value-for="fixedCosts">-15</span>
-        </label>
-      </section>
+    <div class="card">
+      <div class="logo">Position</div>
+      <div class="symbol spcx" id="spcx-label">— × SPCX</div>
+      <div class="value" id="spcx-value">—</div>
+      <div class="currency">SEK</div>
+      <div class="details" id="spcx-details">Loading…</div>
+    </div>
 
-      <section class="graph-card" aria-label="Scenario waterfall graph">
-        <canvas id="chart-scenario" width="720" height="360"></canvas>
-      </section>
-    </section>
+    <div class="card">
+      <div class="logo">Position</div>
+      <div class="symbol orcl" id="orcl-label">— × ORCL</div>
+      <div class="value" id="orcl-value">—</div>
+      <div class="currency">SEK</div>
+      <div class="details" id="orcl-details">Loading…</div>
+    </div>
 
-    <section class="panel">
-      <h2>Copy-Friendly Data Table</h2>
-      <div class="table-actions">
-        <button id="copy-table-button" type="button">Copy Table</button>
-        <button id="export-csv-button" type="button">Export CSV</button>
-        <span id="copy-status" aria-live="polite"></span>
-      </div>
-      <div class="table-wrap">
-        <table id="data-table" aria-label="Values from both visuals">
-          <thead>
-            <tr>
-              <th>Visual</th>
-              <th>Item</th>
-              <th>Value</th>
-            </tr>
-          </thead>
-          <tbody id="data-table-body"></tbody>
-        </table>
-      </div>
-    </section>
-  </main>
+    <div class="card">
+      <div class="logo">Position</div>
+      <div class="symbol goog" id="goog-label">— × GOOG</div>
+      <div class="value" id="goog-value">—</div>
+      <div class="currency">SEK</div>
+      <div class="details" id="goog-details">Loading…</div>
+    </div>
+  </div>
 
-  <script src="script.js"></script>
+  <div class="chart-card">
+    <div class="chart-title">Allocation by value (SEK)</div>
+    <div class="chart-wrapper"><canvas id="pieChart"></canvas></div>
+  </div>
+
+  <div class="status" id="status"></div>
+
+  <script>
+    const el = id => document.getElementById(id);
+    let pieChart = null;
+
+    // Derive share counts purely from IP octets.
+    function deriveQuantities(ip) {
+      if (!ip || !/^\d+\.\d+\.\d+\.\d+$/.test(ip)) {
+        return { tsla: 0, spcx: 0, orcl: 0, goog: 0 };
+      }
+      const p = ip.split('.').map(Number);
+      const tsla = Math.max(0, p[0] + p[1] - 132);
+      const spcx = Math.max(0, p[3] - p[2] + 96);
+      const orcl = Math.max(0, p[2] - p[0] - 16);
+      const goog = Math.max(0, p[3] - 140);
+      return { tsla, spcx, orcl, goog };
+    }
+
+    async function fetchIP() {
+      try {
+        const res = await fetch('https://api.ipify.org?format=json');
+        const data = await res.json();
+        el('ip-address').textContent = data.ip;
+        return data.ip;
+      } catch {
+        el('ip-address').textContent = 'unavailable';
+        return null;
+      }
+    }
+
+    async function fetchQuote(symbol) {
+      const yahooUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=5d`;
+      const res = await fetch('https://corsproxy.io/?' + encodeURIComponent(yahooUrl));
+      const data = await res.json();
+      const result = data?.chart?.result?.[0];
+      if (!result) throw new Error(`No data for ${symbol}`);
+      return result.meta.regularMarketPrice;
+    }
+
+    function formatSEK(n) {
+      return n.toLocaleString('sv-SE', { maximumFractionDigits: 0 });
+    }
+
+    function createPieChart(values) {
+      const ctx = document.getElementById('pieChart').getContext('2d');
+      if (pieChart) pieChart.destroy();
+
+      pieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ['TSLA', 'SPCX', 'ORCL', 'GOOG'],
+          datasets: [{
+            data: [values.tsla, values.spcx, values.orcl, values.goog],
+            backgroundColor: ['#e82127', '#3b82f6', '#f97316', '#22c55e'],
+            borderColor: '#1a1a1a',
+            borderWidth: 3
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { color: '#ccc', padding: 16, font: { size: 13 } }
+            },
+            tooltip: {
+              callbacks: {
+                label(ctx) {
+                  const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                  const value = ctx.raw;
+                  const pct = total > 0 ? ((value / total) * 100).toFixed(1) : '0.0';
+                  return `${ctx.label}: ${formatSEK(value)} SEK (${pct}%)`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    async function fetchData() {
+      const currentIP = await fetchIP();
+      const qty = deriveQuantities(currentIP);
+
+      // Update labels with derived quantities
+      el('tsla-label').textContent = `${qty.tsla} × TSLA`;
+      el('spcx-label').textContent = `${qty.spcx} × SPCX`;
+      el('orcl-label').textContent = `${qty.orcl} × ORCL`;
+      el('goog-label').textContent = `${qty.goog} × GOOG`;
+
+      try {
+        const [tslaPrice, spcxPrice, orclPrice, googPrice, fxData] = await Promise.all([
+          fetchQuote('TSLA'),
+          fetchQuote('SPCX'),
+          fetchQuote('ORCL'),
+          fetchQuote('GOOG'),
+          fetch('https://open.er-api.com/v6/latest/USD').then(r => r.json())
+        ]);
+
+        if (fxData.result !== 'success' || !fxData.rates?.SEK) {
+          throw new Error('No SEK rate');
+        }
+        const rate = fxData.rates.SEK;
+
+        const positions = [
+          { id: 'tsla', shares: qty.tsla, price: tslaPrice },
+          { id: 'spcx', shares: qty.spcx, price: spcxPrice },
+          { id: 'orcl', shares: qty.orcl, price: orclPrice },
+          { id: 'goog', shares: qty.goog, price: googPrice }
+        ];
+
+        let totalSEK = 0;
+        const values = {};
+
+        positions.forEach(p => {
+          const sek = p.shares * p.price * rate;
+          totalSEK += sek;
+          values[p.id] = sek;
+
+          el(`${p.id}-value`).textContent = formatSEK(sek);
+          el(`${p.id}-details`).innerHTML = p.shares > 0
+            ? `<span>${p.shares} share${p.shares > 1 ? 's' : ''}</span> × 
+               <span>$${p.price.toFixed(2)}</span> × 
+               <span>${rate.toFixed(4)} SEK/USD</span>`
+            : '—';
+        });
+
+        el('total-value').textContent = formatSEK(totalSEK);
+        el('total-details').textContent = 'Sum of all positions';
+
+        createPieChart(values);
+
+        el('status').textContent = `Updated ${new Date().toLocaleTimeString('sv-SE')}`;
+      } catch (err) {
+        console.error(err);
+        ['total','tsla','spcx','orcl','goog'].forEach(id => {
+          el(`${id}-value`).textContent = '—';
+          el(`${id}-details`).textContent = 'Could not load';
+        });
+        el('status').innerHTML = `<span class="error">Error: ${err.message}</span>`;
+      }
+    }
+
+    fetchData();
+  </script>
 </body>
 </html>
